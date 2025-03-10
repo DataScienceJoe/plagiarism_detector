@@ -27,26 +27,10 @@ def ngram_overlap(text1, text2, n=10):
     union = sum(ngrams1.values()) + sum(ngrams2.values()) - intersection
     return intersection / union if union != 0 else 0
 
-def longest_common_subsequence(text1, text2):
-    words1, words2 = tokenize(text1), tokenize(text2)
-    len1, len2 = len(words1), len(words2)
-    if len1 == 0 or len2 == 0:
-        return 0
-    prev = np.zeros(len2 + 1, dtype=int)
-    curr = np.zeros(len2 + 1, dtype=int)
-    for i in range(1, len1 + 1):
-        for j in range(1, len2 + 1):
-            if words1[i - 1] == words2[j - 1]:
-                curr[j] = prev[j - 1] + 1
-            else:
-                curr[j] = max(prev[j], curr[j - 1])
-        prev, curr = curr, prev
-    return prev[len2] / max(len1, len2)
 
 def compare_text_files(file1, file2):
     text1, text2 = read_text_file(file1), read_text_file(file2)
     return {
-        "Longest Common Subsequence": longest_common_subsequence(text1, text2),
         "N-gram Overlap (n=3)": ngram_overlap(text1, text2)
     }
 
